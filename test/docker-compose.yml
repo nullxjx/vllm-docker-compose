@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+
+  traefik:
+    image: traefik:v3.2
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami:
+    image: traefik/whoami
+    deploy:
+      replicas: 5
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.services.vllm.loadbalancer.server.port=80"
+      - "traefik.http.routers.chat-completions.rule=PathPrefix(`/v1/chat/completions`)"
+      - "traefik.http.routers.chat-completions.entrypoints=web"
+      - "traefik.http.routers.chat-completions.service=vllm"
+      - "traefik.http.routers.completions.rule=PathPrefix(`/v1/completions`)"
+      - "traefik.http.routers.completions.entrypoints=web"
+      - "traefik.http.routers.completions.service=vllm"
+      - "traefik.http.services.vllm.loadbalancer.server.port=80"
+      - "traefik.http.services.vllm.loadbalancer.sticky=true"
+      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.name=vllm"
+      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.httpOnly=true"
+      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.secure=false"
