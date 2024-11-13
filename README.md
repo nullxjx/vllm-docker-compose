@@ -1,5 +1,5 @@
 # vllm-docker-compose
-dcoker-compose for [vllm](https://github.com/vllm-project/vllm/), support [sticky-sessions]( https://doc.traefik.io/traefik/routing/services/#sticky-sessions) using traefik to enable the [prefix-caching](https://docs.vllm.ai/en/v0.5.5/automatic_prefix_caching/apc.html) feature of vllm
+docker-compose for [vllm](https://github.com/vllm-project/vllm/), support [sticky-sessions]( https://doc.traefik.io/traefik/routing/services/#sticky-sessions) using traefik to enable the [prefix-caching](https://docs.vllm.ai/en/v0.5.5/automatic_prefix_caching/apc.html) feature of vllm
 
 
 ## Usage
