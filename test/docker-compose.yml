@@ -33,3 +33,4 @@ services:
       - "traefik.http.services.vllm.loadbalancer.sticky.cookie.name=vllm"
       - "traefik.http.services.vllm.loadbalancer.sticky.cookie.httpOnly=true"
       - "traefik.http.services.vllm.loadbalancer.sticky.cookie.secure=false"
+      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.expires=1h"  # 设置 Cookie 有效期为 1 小时
