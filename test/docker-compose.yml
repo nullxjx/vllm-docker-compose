@@ -18,19 +18,13 @@ services:
   whoami:
     image: traefik/whoami
     deploy:
-      replicas: 5
+      replicas: 3
     labels:
       - "traefik.enable=true"
-      - "traefik.http.services.vllm.loadbalancer.server.port=80"
-      - "traefik.http.routers.chat-completions.rule=PathPrefix(`/v1/chat/completions`)"
-      - "traefik.http.routers.chat-completions.entrypoints=web"
-      - "traefik.http.routers.chat-completions.service=vllm"
-      - "traefik.http.routers.completions.rule=PathPrefix(`/v1/completions`)"
-      - "traefik.http.routers.completions.entrypoints=web"
-      - "traefik.http.routers.completions.service=vllm"
-      - "traefik.http.services.vllm.loadbalancer.server.port=80"
-      - "traefik.http.services.vllm.loadbalancer.sticky=true"
-      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.name=vllm"
-      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.httpOnly=true"
-      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.secure=false"
-      - "traefik.http.services.vllm.loadbalancer.sticky.cookie.expires=1h"  # 设置 Cookie 有效期为 1 小时
+      - "traefik.http.routers.whoami.rule=PathPrefix(`/whoami`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.services.whoami.loadbalancer.sticky=true" # 启用会话保持功能
+      - "traefik.http.services.whoami.loadbalancer.sticky.cookie.name=whoami_session" # 设置会话保持的 Cookie 名称
+      - "traefik.http.services.whoami.loadbalancer.sticky.cookie.httpOnly=true" # 设置 Cookie 为 HttpOnly，防止客户端脚本访问
+      - "traefik.http.services.whoami.loadbalancer.sticky.cookie.secure=false" # 设置 Cookie 为不安全（仅在 HTTP 上使用）
